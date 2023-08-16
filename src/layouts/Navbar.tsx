@@ -9,22 +9,24 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
 } from '../components/ui/dropdown-menu';
-import { HiOutlineSearch } from 'react-icons/hi';
-import Cart from '../components/Cart';
+
 import logo from '../assets/images/booklogo.png';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
 
 import { auth } from '@/lib/firebase/firebaseConfig';
 import { signOut } from 'firebase/auth';
-import { setUser } from '@/redux/features/user/userSlice';
+
+import { Input } from '@/components/ui/input';
+import {IoMdAddCircleOutline} from 'react-icons/io'
+import {TiBookmark} from 'react-icons/ti'
 
 export default function Navbar() {
-  const { user } = useAppSelector((state) => state.user);
-const dispatch = useAppDispatch()
+  
+
   const handleLogout = () => {
     signOut(auth).then(() => {
   // Sign-out successful.
-  dispatch(setUser(null))
+
 })
   }
 
@@ -39,27 +41,30 @@ const dispatch = useAppDispatch()
           <div>
             <ul className="flex items-center">
               <li>
+             
+                  <Input placeholder='Search...'></Input>
+              
+              </li>
+              <li>
                 <Button variant="link" asChild>
                   <Link to="/">Home</Link>
                 </Button>
               </li>
               <li>
                 <Button variant="link" asChild>
-                  <Link to="/products">Allbooks</Link>
+                  <Link to="/allbooks">Allbooks</Link>
                 </Button>
               </li>
               <li>
                 <Button variant="link" asChild>
-                  <Link to="/checkout">Wishlist</Link>
+                  <Link to="/wishlist">Wishlist <TiBookmark /></Link>
                 </Button>
               </li>
+             
               <li>
-                <Button variant="ghost">
-                  <HiOutlineSearch size="25" />
+              <Button variant="link" asChild>
+                  <Link to="/addnewbook">Add new book <IoMdAddCircleOutline/> </Link>
                 </Button>
-              </li>
-              <li>
-                <Cart />
               </li>
               <li className="ml-5">
                 <DropdownMenu>
@@ -76,7 +81,7 @@ const dispatch = useAppDispatch()
                       Profile
                     </DropdownMenuItem>
 
-                    {!user.email && (
+                    {/* {!user.email && ( */}
                       <>
                         <DropdownMenuItem className="cursor-pointer">
                           <Link to="/login">Login</Link>
@@ -85,12 +90,12 @@ const dispatch = useAppDispatch()
                           <Link to="/signup">signup</Link>
                         </DropdownMenuItem>
                       </>
-                    )}
-                    {user.email && (
+                  {/*   )} */}
+                  {/*   {user.email && ( */}
                       <DropdownMenuItem onClick={()=>handleLogout()} className="cursor-pointer">
                        Logout
                       </DropdownMenuItem>
-                    )}
+                   {/*  )} */}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>

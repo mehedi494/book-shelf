@@ -1,33 +1,28 @@
-import ProductCard from '@/components/ProductCard';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { useGetProductsQuery } from '@/redux/features/products/productApi';
+import BookCard from '@/components/BookCard';
+
+
 // import { useToast } from '@/components/ui/use-toast';
-import { setPriceRange, toggleState } from '@/redux/features/products/productSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { IProduct } from '@/types/globalTypes';
-import { useEffect,useState } from 'react';
+
+import { IBook } from '@/types/globalTypes';
+import { useEffect, useState } from 'react';
+import {FaFilter} from "react-icons/fa"
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
 // import { useEffect, useState } from 'react';
 
-export default function Products() {
-
-  const [productsData, setProductsData]= useState([])
+export default function Allbooks() {
+  const [productsData, setProductsData] = useState([]);
 
   // const { toast } = useToast();
-
-const {status,priceRange} = useAppSelector(state=>state.product)
-const dispatch = useAppDispatch()
- 
-  const handleSlider = (value: number[]) => {
-    dispatch(setPriceRange(value[0]))
-  };
 
   // let productsData;
 
   useEffect(() => {
-    fetch('../public/data.json').then(res=>res.json()).then(data=> setProductsData(data))
-  },[])
+    fetch('../public/data.json')
+      .then((res) => res.json())
+      .then((data) => setProductsData(data));
+  }, []);
 
   // const productsData = data
   // if (status) {
@@ -43,30 +38,29 @@ const dispatch = useAppDispatch()
   return (
     <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
       <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
-        <div>
-          <h1 className="text-2xl uppercase">Availability</h1>
-          <div className="flex items-center space-x-2 mt-3">
-            <Switch id="in-stock" onClick={()=>dispatch(toggleState())}/>
-            <Label htmlFor="in-stock">In stock</Label>
-          </div>
-        </div>
+       
         <div className="space-y-3 ">
-          <h1 className="text-2xl uppercase">Price Range</h1>
+          <h1 className="text-2xl uppercase">FILTER <FaFilter className="inline"/></h1>
           <div className="max-w-xl">
-            <Slider
-              defaultValue={[150]}
-              max={150}
-              min={0}
-              step={1}
-              onValueChange={(value) => handleSlider(value)}
-            />
+            <div className="flex items-center space-x-2">
+              <Input placeholder="By genre" name="genre" id="genre"></Input>
+            </div>
+            <div className="flex items-center space-x-2 mt-2">
+              <Input
+                placeholder="By publication year"
+                name="genre"
+                id="genre"
+              ></Input>
+            </div>
+            <div className="flex items-center space-x-2 mt-2">
+              <Button className='w-full' variant={'secondary'}>Find</Button>
+            </div>
           </div>
-          <div>From 0$ To {priceRange}$</div>
         </div>
       </div>
       <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
-        {productsData?.map((product:IProduct) => (
-          <ProductCard product={product} />
+        {productsData?.map((product: IBook) => (
+          <BookCard product={product} />
         ))}
       </div>
     </div>

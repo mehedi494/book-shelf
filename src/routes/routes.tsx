@@ -3,11 +3,12 @@ import App from '@/App';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
 import Home from '@/pages/Home';
-import Products from '@/pages/Allbooks';
-import Checkout from '@/pages/Checkout';
+import Allbooks from '@/pages/Allbooks';
+import AddNewBook from '@/pages/AddNewBook';
 import Signup from '@/pages/Signup';
-import ProductDetails from '@/pages/ProductDetails';
+import BookDetails from '@/pages/BookDetails';
 import PrivetRoute from './privetRoute';
+import WishList from '@/pages/WishList';
 
 const routes = createBrowserRouter([
   {
@@ -19,16 +20,20 @@ const routes = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/products',
-        element: <Products />,
+        path: '/allbooks',
+        element: <Allbooks />,
       },
       {
         path: '/product-details/:id',
-        element: <ProductDetails />,
+        element: <BookDetails />,
       },
       {
-        path: '/checkout',
-        element: <PrivetRoute> <Checkout /></PrivetRoute>,
+        path: '/addnewbook',
+        element:  <AddNewBook />,
+      },
+      {
+        path: '/wishlist',
+        element:  <WishList />,
       },
     ],
   },

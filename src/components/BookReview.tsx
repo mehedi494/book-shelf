@@ -1,9 +1,10 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { FiSend } from 'react-icons/fi';
 import { useGetCommentQuery, usePostCommentMutation } from '@/redux/features/products/productApi';
+import { IBook } from '@/types/globalTypes';
 
 
 
@@ -12,25 +13,31 @@ interface IProps {
   id: string;
 }
 
-export default function ProductReview({ id }: IProps) {
+export default function BookReview({ id }: IProps) {
   const [inputValue, setInputValue] = useState<string>('');
 
-  const [postComment, { isLoading, isError, isSuccess }] = usePostCommentMutation()
-  const { data } = useGetCommentQuery(id, { refetchOnMountOrArgChange:true});
-
-
-console.log(data);
+  const [data, setData] = useState<IBook[]>([])
   
+  useEffect(() => {
+    fetch('../../public/data.json').then(res =>res.json()).then(data=>setData(data))
+  },[])
+
+//   const [postComment, { isLoading, isError, isSuccess }] = usePostCommentMutation()
+//   const { data } = useGetCommentQuery(id, { refetchOnMountOrArgChange:true});
+
+
+const book = data.find(x => x._id === id)
+  console.log(book?.reviews);
   
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(inputValue);
 
-    const options = {
-      id,
-      data:{comment:inputValue}
-    }
-    postComment(options)
+    // const options = {
+    //   id,
+    //   data:{comment:inputValue}
+    // }
+    // postComment(options)
 
     setInputValue('');
   };
@@ -55,7 +62,7 @@ console.log(data);
         </Button>
       </form>
       {<div className="mt-10">
-        {data?.comments?.map((comment:string, index:number) => (
+        {book?.reviews.map((comment:string, index:number) => (
           <div key={index} className="flex gap-3 items-center mb-5">
             <Avatar>
               <AvatarImage src="https://github.com/shadcn.png" />
