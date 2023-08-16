@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import logo from '../assets/images/technet-logo-white.png';
+import logo from '../assets/images/booklogo.png';
 import { LoginForm } from '@/components/LoginForm';
 
 
@@ -32,11 +32,11 @@ export default function Login() {
             className="absolute inset-0 bg-cover"
             style={{
               backgroundImage:
-                'url(https://images.unsplash.com/photo-1590069261209-f8e9b8642343?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1376&q=80)',
+                'url(https://img.freepik.com/free-photo/view-3d-boy-using-laptop_23-2150709886.jpg?t=st=1692191368~exp=1692194968~hmac=1f9ade45cdc46b4d4d3ffebf852c28bf920a887ad002428ec3cfafe5e6583d5e&w=740)',
             }}
           />
          <Link to='/'> <div className="relative z-20 flex items-center text-lg font-medium">
-            <img className="h-8" src={logo} alt="" />
+            {<img className="h-8" src={logo} alt="" />}
           </div></Link>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2"></blockquote>
