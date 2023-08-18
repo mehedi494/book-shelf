@@ -25,6 +25,7 @@ const bookSlice = createSlice({
       }
       state.total = state.wishlist.length;
     },
+    
   },
 });
 export const { addToWisthList } = bookSlice.actions;

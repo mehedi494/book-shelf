@@ -4,11 +4,10 @@ import BookCard from '@/components/BookCard';
 // import { useToast } from '@/components/ui/use-toast';
 
 import { IBook } from '@/types/globalTypes';
-import { useEffect, useState } from 'react';
 import {FaFilter} from "react-icons/fa"
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useGetBookQuery } from '@/redux/features/books/bookApi';
+import { useGetAllBookQuery } from '@/redux/features/books/bookApi';
 
 // import { useEffect, useState } from 'react';
 
@@ -16,8 +15,8 @@ export default function Allbooks() {
 
   
 
-  const { data,isLoading } = useGetBookQuery(undefined)
-  console.log(isLoading);
+  const { data,isLoading } = useGetAllBookQuery(undefined)
+  
 
   // useEffect(() => {
   // }, [data]);
@@ -25,7 +24,7 @@ export default function Allbooks() {
   // if (data.status) {
   //   console.log(data);
   // }
-  console.log(data);
+
 
 
 
@@ -56,8 +55,8 @@ export default function Allbooks() {
         </div>
       </div>
       <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
-        {data?.data?.data.map((product: IBook) => (
-          <BookCard product={product} />
+        {data?.data?.data.map((book: IBook) => (
+          <BookCard book={book} />
         ))}
       </div>
       </div>}

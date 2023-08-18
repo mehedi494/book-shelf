@@ -1,11 +1,14 @@
-import { api } from "@/redux/api/apiSlice";
+import { api } from '@/redux/api/apiSlice';
 
 const bookApi = api.injectEndpoints({
-    endpoints: (builder) => ({
-        getBook: builder.query({
-            query:()=>'/book/allbooks'
-        })
-    })
-})
+  endpoints: (builder) => ({
+    getAllBook: builder.query({
+      query: () => '/book/allbooks',
+    }),
+        getSingleBook: builder.query({
+          query:(id)=>`/book/${id}`
+      })
+  }),
+});
 
-export const { useGetBookQuery } = bookApi;
+export const {  useGetAllBookQuery,useGetSingleBookQuery } = bookApi;
