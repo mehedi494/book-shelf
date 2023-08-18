@@ -8,35 +8,32 @@ import { useEffect, useState } from 'react';
 import {FaFilter} from "react-icons/fa"
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useGetBookQuery } from '@/redux/features/books/bookApi';
 
 // import { useEffect, useState } from 'react';
 
 export default function Allbooks() {
-  const [productsData, setProductsData] = useState([]);
 
-  // const { toast } = useToast();
+  
 
-  // let productsData;
+  const { data,isLoading } = useGetBookQuery(undefined)
+  console.log(isLoading);
 
-  useEffect(() => {
-    fetch('../public/data.json')
-      .then((res) => res.json())
-      .then((data) => setProductsData(data));
-  }, []);
-
-  // const productsData = data
-  // if (status) {
-  //   productsData = data?.data?.filter(
-  //     (item: { status: boolean; price: number; }) => item.status === true && item.price < priceRange
-  //   );
-  // } else if (priceRange > 0) {
-  //   productsData = data?.data.filter((item: { price: number; }) => item.price < priceRange);
-  // } else {
-  //   productsData = data?.data;
+  // useEffect(() => {
+  // }, [data]);
+// let = products
+  // if (data.status) {
+  //   console.log(data);
   // }
+  console.log(data);
+
+
 
   return (
-    <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
+
+    <>
+      {isLoading ? <p className='text-center'>Loading...</p> :
+        <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
       <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
        
         <div className="space-y-3 ">
@@ -59,10 +56,11 @@ export default function Allbooks() {
         </div>
       </div>
       <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
-        {productsData?.map((product: IBook) => (
+        {data?.data?.data.map((product: IBook) => (
           <BookCard product={product} />
         ))}
       </div>
-    </div>
+      </div>}
+      </>
   );
 }
