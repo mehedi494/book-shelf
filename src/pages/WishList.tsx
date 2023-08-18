@@ -1,4 +1,5 @@
 import BookCard from '@/components/BookCard';
+import { useAppSelector } from '@/redux/app/hook';
 
 // import { useToast } from '@/components/ui/use-toast';
 
@@ -9,17 +10,20 @@ import { useLocation } from 'react-router-dom';
 // import { useEffect, useState } from 'react';
 
 export default function WishList() {
-  const [productsData, setProductsData] = useState([]);
+
+  const { wishlist,total } = useAppSelector((state) => state.wishlist)
+ 
+  // const [productsData, setProductsData] = useState([]);
 
   // const { toast } = useToast();
 
   // let productsData;
 
-  useEffect(() => {
-    fetch('../public/data.json')
-      .then((res) => res.json())
-      .then((data) => setProductsData(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch('../public/data.json')
+  //     .then((res) => res.json())
+  //     .then((data) => setProductsData(data));
+  // }, []);
 
   // const productsData = data
   // if (status) {
@@ -35,10 +39,10 @@ export default function WishList() {
   return (
     <div>
       
-          <h1 className='text-4xl text-center uppercase text-green-600 mb-5'>your wishlist page</h1>
+      <h1 className='text-xl text-end  m-4 text-muted-foreground mb-5'>Wishlist total: <b>{ total}</b>  </h1>
           <div className="grid  max-w-7xl mx-auto  ">
         <div className="col-span-9 grid grid-cols-4 gap-5 pb-10">
-          {productsData?.map((product: IBook) => (
+          {wishlist?.map((product: IBook) => (
             <BookCard product={product} />
           ))}
         </div>

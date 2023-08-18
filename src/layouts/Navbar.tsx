@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
 } from '../components/ui/dropdown-menu';
 
-import logo from '../assets/images/booklogo.png';
+import logo from '../assets/images/bookShelf-logo .png';
 
 
 import { auth } from '@/lib/firebase/firebaseConfig';

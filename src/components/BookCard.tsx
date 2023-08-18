@@ -2,6 +2,8 @@ import { IBook } from '@/types/globalTypes';
 import { toast } from './ui/use-toast';
 import { Button } from './ui/button';
 import { Link, useLocation } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@/redux/app/hook';
+import { addToWisthList } from '@/redux/features/books/bookSlice';
 
 
 interface IProps {
@@ -10,11 +12,13 @@ interface IProps {
 
 export default function BookCard({ product }: IProps) {
   const {pathname}= useLocation()
-  const handleAddProduct = (product: IBook) => {
-
+  const dispatch = useAppDispatch()
+  
+  const handleAddWishList = (product: IBook) => {
+dispatch(addToWisthList(product))
     
     toast({
-      description: 'Product Added',
+      description: 'add to wishlist',
     });
   };
   return (
@@ -34,7 +38,7 @@ export default function BookCard({ product }: IProps) {
           Published: { product?.publication_date}
         </p>
         
-       {pathname !=="/wishlist" && <Button variant="outline" >
+       {pathname !=="/wishlist" && <Button variant="outline" onClick={()=>handleAddWishList(product)} >
           Add to Wishlist
         </Button>}
       </div>

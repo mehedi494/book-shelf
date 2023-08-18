@@ -1,5 +1,5 @@
 
-import logo from '@/assets/images/booklogo.png';
+import logo from '@/assets/images/bookShelf-white-logo.png';
 import { RiFacebookBoxFill, RiInstagramLine } from 'react-icons/ri';
 export default function Footer() {
   const date = new Date();
