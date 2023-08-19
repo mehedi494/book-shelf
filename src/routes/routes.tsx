@@ -35,7 +35,9 @@ const routes = createBrowserRouter([
         path: '/wishlist',
         element:  <WishList />,
       },
+      
     ],
+    
   },
   {
     path: '/login',
@@ -49,6 +51,7 @@ const routes = createBrowserRouter([
     path: '*',
     element: <NotFound />,
   },
+  
 ]);
 
 export default routes;

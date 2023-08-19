@@ -2,8 +2,9 @@ import { IBook } from '@/types/globalTypes';
 import { toast } from './ui/use-toast';
 import { Button } from './ui/button';
 import { Link, useLocation } from 'react-router-dom';
-import { useAppDispatch } from '@/redux/app/hook';
+import { useAppDispatch, useAppSelector } from '@/redux/app/hook';
 import { addToWisthList } from '@/redux/features/books/bookSlice';
+import { User } from 'lucide-react';
 
 
 interface IProps {
@@ -13,11 +14,12 @@ interface IProps {
 export default function BookCard({  book }: IProps) {
   const {pathname}= useLocation()
   const dispatch = useAppDispatch()
+  const {user}= useAppSelector(state=>state.auth)
  
   
   const handleAddWishList = (book: IBook) => {
-dispatch(addToWisthList(book))
     
+dispatch(addToWisthList(book))
     toast({
       description: 'add to wishlist',
     });
@@ -39,7 +41,10 @@ dispatch(addToWisthList(book))
           Published: { book?.publication_date}
         </p>
         
-       {pathname !=="/wishlist" && <Button variant="outline" onClick={()=>handleAddWishList(book)} >
+        { !user?.email ? <Link to='/login'>
+        <Button variant="outline"  >
+          Add to Wishlist
+        </Button></Link> :pathname === "/wishlist" ?<></>: <Button variant="outline" onClick={() => handleAddWishList(book)} >
           Add to Wishlist
         </Button>}
       </div>

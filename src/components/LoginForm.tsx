@@ -7,7 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
+
 import { FcGoogle } from 'react-icons/fc';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+// import { IoCheckmarkDoneCircleSharp } from 'react-icons/io';
+
+import { useLoginUserMutation } from '@/redux/features/auth/authApi';
+import { useNavigate } from 'react-router-dom';
+
 
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
@@ -18,19 +25,31 @@ interface LoginFormInputs {
 }
 
 export function LoginForm({ className, ...props }: UserAuthFormProps) {
-
-
+  const navigate = useNavigate()
+  
+  // const dispatch = useAppDispatch()
+  const [loginUser,{data:userData,isLoading,isError,isSuccess}]= useLoginUserMutation()
+  console.log(userData?.data?.accessToken)
+  
+   
+  if (!isLoading && isSuccess && userData?.data.accessToken) {
+    localStorage.setItem('accessToken', userData?.data?.accessToken)
+  }
+  
+  if (isSuccess) {
+    navigate('/')
+  }
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
-
-  const onSubmit = (data: LoginFormInputs) => {
-    console.log(data);
+  const onSubmit = (data: LoginFormInputs) => {   
+     loginUser(data)   
    
   };
 
+ 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,7 +78,13 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
             />
             {errors.password && <p>{errors.password.message}</p>}
           </div>
-          <Button>Login with email</Button>
+         {!isLoading? <Button  >Login with email</Button>:
+            <Button disabled><p className='animate-spin'><AiOutlineLoading3Quarters /></p></Button>}
+          <div>
+            {
+              isSuccess && !isError ?<p > Login success..</p> : !isSuccess && !isLoading?<></>: <p>something went wrong</p>
+            }
+          </div>
         </div>
       </form>
       <div className="relative">

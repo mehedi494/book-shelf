@@ -1,19 +1,19 @@
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import logo from '../assets/images/booklogo.png';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../assets/images/bookShelf-logo .png';
 import { LoginForm } from '@/components/LoginForm';
+import { toast } from '../components/ui/use-toast';
 
 
 
 export default function Login() {
   
-
-//   useEffect(() => {
-   
-//     navigate('/')
   
-// },[])
+  toast({
+  description:"Log in Successfull"
+  })
+
 
   return (
     <>

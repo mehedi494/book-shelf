@@ -33,12 +33,6 @@ const book = data.find(x => x._id === id)
     event.preventDefault();
     console.log(inputValue);
 
-    // const options = {
-    //   id,
-    //   data:{comment:inputValue}
-    // }
-    // postComment(options)
-
     setInputValue('');
   };
 

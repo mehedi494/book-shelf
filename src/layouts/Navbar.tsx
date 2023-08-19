@@ -13,21 +13,31 @@ import {
 import logo from '../assets/images/bookShelf-logo .png';
 
 
-import { auth } from '@/lib/firebase/firebaseConfig';
-import { signOut } from 'firebase/auth';
-
 import { Input } from '@/components/ui/input';
 import {IoMdAddCircleOutline} from 'react-icons/io'
 import {TiBookmark} from 'react-icons/ti'
+import { useAppDispatch, useAppSelector } from '@/redux/app/hook';
+import { setUser } from '@/redux/features/auth/authSlice';
+
 
 export default function Navbar() {
-  
-
+  const {user}= useAppSelector(state=>state.auth)
+console.log(user?.email );
+const dispatch = useAppDispatch()
   const handleLogout = () => {
-    signOut(auth).then(() => {
-  // Sign-out successful.
 
-})
+   const  user= {
+      _id: '',
+      name: '',
+      email: '',
+      role: '',
+      createdAt: '',
+      updatedAt: '',
+      id: '',
+    }
+    dispatch(setUser(user))
+    localStorage.setItem('accessToken','')
+    
   }
 
   return (
@@ -55,17 +65,17 @@ export default function Navbar() {
                   <Link to="/allbooks">Allbooks</Link>
                 </Button>
               </li>
-              <li>
+              {user?.email&&<li>
                 <Button variant="link" asChild>
                   <Link to="/wishlist">Wishlist <TiBookmark /></Link>
                 </Button>
-              </li>
+              </li>}
              
-              <li>
+             {user?.email&& <li>
               <Button variant="link" asChild>
                   <Link to="/addnewbook">Add new book <IoMdAddCircleOutline/> </Link>
                 </Button>
-              </li>
+              </li>}
               <li className="ml-5">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="outline-none">
@@ -77,11 +87,11 @@ export default function Navbar() {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">
-                      Profile
-                    </DropdownMenuItem>
+                   {user?.email&& <DropdownMenuItem className="cursor-pointer">
+                      {user?.email}
+                    </DropdownMenuItem>}
 
-                    {/* {!user.email && ( */}
+                    {!user?.email && (
                       <>
                         <DropdownMenuItem className="cursor-pointer">
                           <Link to="/login">Login</Link>
@@ -90,12 +100,12 @@ export default function Navbar() {
                           <Link to="/signup">signup</Link>
                         </DropdownMenuItem>
                       </>
-                  {/*   )} */}
-                  {/*   {user.email && ( */}
+                    )}
+                    {user?.email && (
                       <DropdownMenuItem onClick={()=>handleLogout()} className="cursor-pointer">
                        Logout
                       </DropdownMenuItem>
-                   {/*  )} */}
+                     )} 
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
