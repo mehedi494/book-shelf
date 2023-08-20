@@ -13,6 +13,14 @@ const authApi = api.injectEndpoints({
         body: data,
       }),
     }),
+    createUser: builder.mutation({
+      query: (token:string ) => ({
+        url: '/user',
+        method: 'GET',
+        // headers:authorization': localStorage?.getItem('accessToken'),
+        headers: { authorization: token },
+      }),
+    }),
     getMeUser: builder.mutation({
       query: (token:string ) => ({
         url: '/user',

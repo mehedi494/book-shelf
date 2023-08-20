@@ -22,7 +22,7 @@ import { setUser } from '@/redux/features/auth/authSlice';
 
 export default function Navbar() {
   const {user}= useAppSelector(state=>state.auth)
-console.log(user?.email );
+
 const dispatch = useAppDispatch()
   const handleLogout = () => {
 

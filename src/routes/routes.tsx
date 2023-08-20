@@ -7,8 +7,9 @@ import Allbooks from '@/pages/Allbooks';
 import AddNewBook from '@/pages/AddNewBook';
 import Signup from '@/pages/Signup';
 import BookDetails from '@/pages/BookDetails';
-import PrivetRoute from './privetRoute';
+
 import WishList from '@/pages/WishList';
+import UpdateBook from '@/pages/UpdateBook';
 
 const routes = createBrowserRouter([
   {
@@ -25,7 +26,11 @@ const routes = createBrowserRouter([
       },
       {
         path: '/book-details/:id',
-        element: <BookDetails />,
+        element:<BookDetails /> ,
+      },
+      {
+        path: '/book-edit/:id',
+        element: <UpdateBook />,
       },
       {
         path: '/addnewbook',

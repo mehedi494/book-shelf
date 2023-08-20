@@ -6,29 +6,44 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
+
 import { FcGoogle } from 'react-icons/fc';
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 interface SignupFormInputs {
   email: string;
   password: string;
+  confirmPassword:string
 }
 
 export function SignupForm({ className, ...props }: UserAuthFormProps) {
  
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignupFormInputs>();
+  const validationSchema = Yup.object().shape({
+    email:Yup.string().required('email is required'),
+    password: Yup.string()
+        .required('Password is required'),
+        // .min(6, 'Password must be at least 6 characters'),
+    confirmPassword: Yup.string()
+        .required('Confirm Password is required')
+        .oneOf([Yup.ref('password')], 'Passwords must match')
+        
+});
+const formOptions = { resolver: yupResolver(validationSchema) };
 
-  const onSubmit = (data: SignupFormInputs) => {
+// get functions to build form with useForm() hook
+const { register, handleSubmit, reset, formState } = useForm(formOptions);
+const { errors } = formState;
+
+function onSubmit(data:SignupFormInputs) {
+    // display form data on success
     console.log(data);
-  
-  };
+}
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -45,7 +60,7 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              {...register('email', { required: 'Email is required' })}
+              {...register('email')}
             />
             {errors.email && <p>{errors.email.message}</p>}
             <Input
@@ -54,16 +69,18 @@ export function SignupForm({ className, ...props }: UserAuthFormProps) {
               type="password"
               autoCapitalize="none"
               autoCorrect="off"
-              {...register('password', { required: 'Password is required' })}
+              {...register('password')}
             />
             {errors.password && <p>{errors.password.message}</p>}
             <Input
-              id="password"
+              id="confirmPassword"
               placeholder="confirm password"
               type="password"
               autoCapitalize="none"
               autoCorrect="off"
-            />
+              {...register('confirmPassword')}
+              />
+              {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
           </div>
           <Button>Create Account</Button>
         </div>

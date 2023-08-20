@@ -11,7 +11,7 @@ function App() {
   const [getUserFunc,{data}]= useGetMeUserMutation(undefined)
   const session = localStorage.getItem('accessToken')
   // console.log(session);
-  console.log(data?.data);
+  // console.log(data?.data);
   const dispatch = useAppDispatch()
   dispatch(setUser(data?.data))
   

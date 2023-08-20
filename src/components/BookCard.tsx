@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/redux/app/hook';
 import { addToWisthList } from '@/redux/features/books/bookSlice';
-import { User } from 'lucide-react';
+
 
 
 interface IProps {
