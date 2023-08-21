@@ -8,21 +8,21 @@ const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
     loginUser: builder.mutation({
       query: (data: ILoging) => ({
-        url: '/user/login',
+        url: '/api/v1/user/login',
         method: 'POST',
         body: data,
       }),
     }),
     createUser: builder.mutation({
       query: (data) => ({
-        url: '/user/create',
+        url: '/api/v1/user/create',
         method: 'POST',
         body: data,
       }),
     }),
     getMeUser: builder.mutation({
       query: (token: string) => ({
-        url: '/user',
+        url: '/api/v1/user',
         method: 'GET',
         // headers:authorization': localStorage?.getItem('accessToken'),
         headers: { authorization: token },

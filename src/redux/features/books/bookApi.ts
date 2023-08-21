@@ -3,7 +3,7 @@ import { api } from '@/redux/api/apiSlice';
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getAllBook: builder.query({
-      query: () => `/book/allbooks`,
+      query: () => `/api/v1/book/allbooks`,
     }),
     getSingleBook: builder.query({
       query: (id) => `/book/${id}`,
@@ -11,7 +11,7 @@ const bookApi = api.injectEndpoints({
     }),
     addNewBook: builder.mutation({
       query: ({ token, data }) => ({
-        url: '/book/add-new',
+        url: '/api/v1/book/add-new',
         method: 'POST',
         headers: { authorization: token },
         body: data,
@@ -20,7 +20,7 @@ const bookApi = api.injectEndpoints({
     }),
     editBook: builder.mutation({
       query: ({ token, data }) => ({
-        url: '/book/update',
+        url: '/api/v1/book/update',
         method: 'PATCH',
         headers: { authorization: token },
         body: data,
@@ -29,7 +29,7 @@ const bookApi = api.injectEndpoints({
     }),
     deleteBook: builder.mutation({
       query: ({ token, id }) => ({
-        url: `/book/?id=${id}`,
+        url: `/api/v1/book/?id=${id}`,
         method: 'DELETE',
         headers: { authorization: token },
         
@@ -46,7 +46,7 @@ const bookApi = api.injectEndpoints({
       invalidatesTags:['comments']
     }),
     topTenBooks: builder.query({
-      query: () => `/book/allbooks?sortBy=createdAt&&sortOrder=desc`,
+      query: () => `/api/v1/book/allbooks?sortBy=createdAt&&sortOrder=desc`,
       providesTags: ['books'],
     }),
     
