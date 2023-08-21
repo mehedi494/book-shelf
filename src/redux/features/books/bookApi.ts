@@ -6,7 +6,7 @@ const bookApi = api.injectEndpoints({
       query: () => `/api/v1/book/allbooks`,
     }),
     getSingleBook: builder.query({
-      query: (id) => `/book/${id}`,
+      query: (id) => `/api/v1/book/${id}`,
       providesTags: ['books',"comments"],
     }),
     addNewBook: builder.mutation({
@@ -38,7 +38,7 @@ const bookApi = api.injectEndpoints({
     }),
     commentBook: builder.mutation({
       query: ({ token, payload }) => ({
-        url: `/book/comment`,
+        url: `/api/v1/book/comment`,
         method: 'PATCH',
         headers: { authorization: token },
         body: payload,

@@ -17,7 +17,7 @@ export default function BookReview({ book }: IProps) {
 
   const [commentPost,] = useCommentBookMutation();
 const {data}=useGetSingleBookQuery(book?._id)
-console.log(data?.data.reviews)
+
   const commentData = data?.data?.reviews;
 
 

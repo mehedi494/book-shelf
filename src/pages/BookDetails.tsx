@@ -29,7 +29,7 @@ const navigate =useNavigate()
   const [deleteFunc, { isSuccess, isError ,isLoading:loading}] = useDeleteBookMutation()
   
   const book:IBook = data?.data;
-  console.log(book);
+  console.log(data);
   const dispatch = useAppDispatch();
 
   const handleAddWishList = (book: IBook) => {
@@ -44,7 +44,7 @@ const navigate =useNavigate()
     const options = {
       token,id
     }
-    console.log(options.id);
+    
     deleteFunc(options)
   }
   if (isSuccess) {
@@ -96,7 +96,7 @@ const navigate =useNavigate()
             </div>
 
             <div className=" flex flex-col justify-around ">
-              <Link to={`/book-edit/${book._id}`}>
+              <Link to={`/book-edit/${book?._id}`}>
                 {' '}
                 <Button
                   variant={'outline'}
@@ -126,7 +126,7 @@ const navigate =useNavigate()
 
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction  onClick={()=>handlDelete(book._id)} className="bg-red-400 hover:bg-red-500">
+                    <AlertDialogAction  onClick={()=>handlDelete(book?._id)} className="bg-red-400 hover:bg-red-500">
                       Delete
                     </AlertDialogAction>
                   </AlertDialogFooter>
