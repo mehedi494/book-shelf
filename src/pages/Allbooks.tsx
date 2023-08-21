@@ -2,50 +2,37 @@ import BookCard from '@/components/BookCard';
 
 // import { useToast } from '@/components/ui/use-toast';
 
-import { IBook } from '@/types/globalTypes';
 import { FaFilter } from 'react-icons/fa';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
 import { useForm } from 'react-hook-form';
-import {
-  filterBook,
-  getAllBooks,
-  
-} from '@/redux/features/books/bookSlice';
+import { filterBook, getAllBooks } from '@/redux/features/books/bookSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/app/hook';
 import { useEffect } from 'react';
 
 export default function Allbooks() {
   const dispatch = useAppDispatch();
-  const { books, loading } = useAppSelector(
-    (state) => state.books
-  );
+  const { books, loading } = useAppSelector((state) => state.books);
 
   // console.log(books?.data?.data);
 
   // dispatch( getAllBooks())
 
-  let booksData;
-  
   // eslint-disable-next-line prefer-const
+  let booksData = books; /* ?.data?.data */
+  console.log(books);
 
-  booksData = books?.data?.data || []
-
-  // if (!booksData?.length) {
-  //   setIsLoding(true)
-  // } else {
-  //   setIsLoding(false)
-  // }
+ 
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  type Idata= {
+  type Idata = {
     genre: string;
     publication_date: string;
-}
-  const onSubmit =  (data:Idata) => {
-     dispatch(filterBook(data));
-    booksData = books?.data?.data;
+  };
+  const onSubmit = (data: Idata) => {
+    dispatch(filterBook(data));
+    booksData = books; /* ?.data?.data; */
   };
   useEffect(() => {
     dispatch(getAllBooks());
@@ -64,9 +51,8 @@ export default function Allbooks() {
               <h1 className="text-2xl uppercase">
                 FILTER <FaFilter className="inline" />
               </h1>
-              
-                <div className="max-w-xl">
-               
+
+              <div className="max-w-xl">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="flex items-center space-x-2">
                     <Input
@@ -95,15 +81,15 @@ export default function Allbooks() {
               </div>
             </div>
           </div>
-            <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
-            
-                <>
-                  {booksData.length === 0 &&
-                  <h1 className='text-center text-2xl'>Not Found</h1>}
-                </>
-              
-            {booksData?.map((book: IBook) => (
-              <BookCard book={book} />
+          <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">
+            <>
+              {booksData?.length === 0 && (
+                <h1 className="text-center text-2xl">Not Found</h1>
+              )}
+            </>
+
+            {booksData?.map((book, index:number) => (
+              <BookCard book={book} key={index} />
             ))}
           </div>
         </div>

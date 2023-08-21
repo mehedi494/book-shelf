@@ -18,7 +18,7 @@ import {IoMdAddCircleOutline} from 'react-icons/io'
 import {TiBookmark} from 'react-icons/ti'
 import { useAppDispatch, useAppSelector } from '@/redux/app/hook';
 import { setUser } from '@/redux/features/auth/authSlice';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ISearch, searchBook } from '@/redux/features/books/bookSlice';
 
 
@@ -42,9 +42,9 @@ const dispatch = useAppDispatch()
     localStorage.setItem('accessToken','')
     
   }
-const {register,handleSubmit}= useForm()
+const {register,handleSubmit}= useForm<ISearch>()
 
-  const handleSearch = (data: ISearch) => {
+  const handleSearch:SubmitHandler<ISearch> = (data: ISearch):void => {
     console.log(data);
     dispatch(searchBook(data))
   }
