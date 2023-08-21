@@ -1,38 +1,38 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { FiSend } from 'react-icons/fi';
 
 import { IBook } from '@/types/globalTypes';
-
-
+import { useCommentBookMutation, useGetSingleBookQuery } from '@/redux/features/books/bookApi';
 
 
 interface IProps {
-  id: string;
+  book: IBook;
 }
 
-export default function BookReview({ id }: IProps) {
+export default function BookReview({ book }: IProps) {
   const [inputValue, setInputValue] = useState<string>('');
 
-  const [data, setData] = useState<IBook[]>([])
-  
-  useEffect(() => {
-    fetch('../../public/data.json').then(res =>res.json()).then(data=>setData(data))
-  },[])
-
-//   const [postComment, { isLoading, isError, isSuccess }] = usePostCommentMutation()
-//   const { data } = useGetCommentQuery(id, { refetchOnMountOrArgChange:true});
+  const [commentPost,] = useCommentBookMutation();
+const {data}=useGetSingleBookQuery(book?._id)
+console.log(data?.data.reviews)
+  const commentData = data?.data?.reviews;
 
 
-const book = data.find(x => x._id === id)
-  console.log(book?.reviews);
-  
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputValue);
 
+    const data = {
+      token: localStorage.getItem('accessToken'),
+      payload: {
+        bookId: book._id,
+        comment: inputValue,
+      },
+    };
+    console.log(data);
+    commentPost(data);
     setInputValue('');
   };
 
@@ -55,17 +55,19 @@ const book = data.find(x => x._id === id)
           <FiSend />
         </Button>
       </form>
-      {<div className="mt-10">
-        {book?.reviews.map((comment:string, index:number) => (
-          <div key={index} className="flex gap-3 items-center mb-5">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <p>{comment}</p>
-          </div>
-        ))}
-      </div>}
+      {
+        <div className="mt-10">
+          {commentData?.map((obj: {uerid:string,comment:string}, index: number) => (
+            <div key={index} className="flex gap-3 items-center mb-5">
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <p>{obj?.comment}</p>
+            </div>
+          ))}
+        </div>
+      }
     </div>
   );
 }

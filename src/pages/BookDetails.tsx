@@ -19,6 +19,7 @@ import { addToWisthList } from '@/redux/features/books/bookSlice';
 import { IBook } from '@/types/globalTypes';
 import { FiEdit } from 'react-icons/fi';
 import { MdDeleteForever } from 'react-icons/md';
+import BookReview from './../components/BookReview';
 
 
 export default function BookDetails() {
@@ -27,7 +28,8 @@ const navigate =useNavigate()
   const { data, isLoading } = useGetSingleBookQuery(id);
   const [deleteFunc, { isSuccess, isError ,isLoading:loading}] = useDeleteBookMutation()
   
-  const book = data?.data;
+  const book:IBook = data?.data;
+  console.log(book);
   const dispatch = useAppDispatch();
 
   const handleAddWishList = (book: IBook) => {
@@ -81,11 +83,11 @@ const navigate =useNavigate()
               <h1 className="text-3xl font-semibold">{book?.title}</h1>
               <p className="text-xl">Author: {book?.author}</p>
               <p className="text-xl">Published: {book?.publication_date}</p>
-              <ul className="space-y-1 text-lg">
+              {/* <ul className="space-y-1 text-lg">
                 {book?.reviews?.map((feature: string) => (
                   <li key={feature}>{feature}</li>
                 ))}
-              </ul>
+              </ul> */}
               <Button onClick={() => handleAddWishList(book)}>
                 Add to wishlist
               </Button>
@@ -132,6 +134,7 @@ const navigate =useNavigate()
           </div>
         </div>
       )}
+      {<BookReview book={book}></BookReview>}
     </>
   );
 }

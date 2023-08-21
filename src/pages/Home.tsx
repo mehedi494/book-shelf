@@ -3,6 +3,7 @@ import banner from '@/assets/images/pngwing.com.png';
 import hero from '@/assets/images/img9.jpeg';
 import { Link } from 'react-router-dom';
 import Footer from '@/layouts/Footer';
+import TopTen from '@/components/TopTen';
 
 export default function Home() {
   return (
@@ -25,6 +26,11 @@ export default function Home() {
           <img className='w-3/4' src={banner} alt="" />
         </div>
       </div>
+      <div>
+        <p className='text-center'>Recently added top tens </p>
+        <TopTen></TopTen>
+     </div>
+
       <div className="mb-96">
         <div>
           <img className="mx-auto" src={hero} alt="" />

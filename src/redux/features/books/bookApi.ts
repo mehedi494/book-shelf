@@ -7,7 +7,7 @@ const bookApi = api.injectEndpoints({
     }),
     getSingleBook: builder.query({
       query: (id) => `/book/${id}`,
-      providesTags: ['books'],
+      providesTags: ['books',"comments"],
     }),
     addNewBook: builder.mutation({
       query: ({ token, data }) => ({
@@ -34,6 +34,20 @@ const bookApi = api.injectEndpoints({
         headers: { authorization: token },
       }),
     }),
+    commentBook: builder.mutation({
+      query: ({ token, payload }) => ({
+        url: `/book/comment`,
+        method: 'PATCH',
+        headers: { authorization: token },
+        body: payload,
+      }),
+      invalidatesTags:['comments']
+    }),
+    topTenBooks: builder.query({
+      query: () => `/book/allbooks?sortBy=createdAt&&sortOrder=desc`,
+      providesTags: ['books'],
+    }),
+    
   }),
 });
 
@@ -43,4 +57,6 @@ export const {
   useAddNewBookMutation,
   useEditBookMutation,
   useDeleteBookMutation,
+  useCommentBookMutation,
+  useTopTenBooksQuery
 } = bookApi;

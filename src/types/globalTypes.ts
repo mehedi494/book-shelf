@@ -6,4 +6,5 @@ export interface IBook {
   publication_date: number;
   reviews: string[];
   image: string;
+  userId: string;
 }
