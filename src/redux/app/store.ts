@@ -4,7 +4,7 @@ import authReducer from '../features/auth/authSlice'
 import { api } from '../api/apiSlice';
 const store = configureStore({
   reducer: {
-    wishlist: bookWishlistReducer,
+    books: bookWishlistReducer,
     auth:authReducer,
 
     [api.reducerPath]: api.reducer
@@ -13,4 +13,5 @@ const store = configureStore({
   getDefaultMiddleware().concat(api.middleware),
 });
 export default store;
+export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>

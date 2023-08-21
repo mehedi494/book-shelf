@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Button } from '../components/ui/button';
 import { DropdownMenuSeparator } from '../components/ui/dropdown-menu';
@@ -18,11 +18,14 @@ import {IoMdAddCircleOutline} from 'react-icons/io'
 import {TiBookmark} from 'react-icons/ti'
 import { useAppDispatch, useAppSelector } from '@/redux/app/hook';
 import { setUser } from '@/redux/features/auth/authSlice';
+import { useForm } from 'react-hook-form';
+import { ISearch, searchBook } from '@/redux/features/books/bookSlice';
+
 
 
 export default function Navbar() {
+  const {pathname}=useLocation()
   const {user}= useAppSelector(state=>state.auth)
-
 const dispatch = useAppDispatch()
   const handleLogout = () => {
 
@@ -39,6 +42,13 @@ const dispatch = useAppDispatch()
     localStorage.setItem('accessToken','')
     
   }
+const {register,handleSubmit}= useForm()
+
+  const handleSearch = (data: ISearch) => {
+    console.log(data);
+    dispatch(searchBook(data))
+  }
+
 
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
@@ -50,11 +60,14 @@ const dispatch = useAppDispatch()
           </div></Link>
           <div>
             <ul className="flex items-center">
-              <li>
-             
-                  <Input placeholder='Search...'></Input>
+              {pathname=== '/allbooks'&&
+                <li>
+                <form onKeyUp={handleSubmit(handleSearch)} >
+                  
+                  <Input placeholder='Search...' {...register('searchTerm')}/>
+             </form>
               
-              </li>
+              </li>}
               <li>
                 <Button variant="link" asChild>
                   <Link to="/">Home</Link>

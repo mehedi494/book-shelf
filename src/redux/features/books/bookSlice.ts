@@ -1,14 +1,103 @@
-import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IBook } from './../../../types/globalTypes';
 import type { PayloadAction } from '@reduxjs/toolkit';
+
+
+
+interface BookObj{
+  titel: string;
+  author: string;
+  publication_date: string;
+  userId: string;
+  genre: string;
+  image: string;
+  reviews:string[]
+}
 
 interface IWisthlist {
   wishlist: IBook[];
   total: number;
+  loading: boolean;
+  books: BookObj[];
+  error: boolean;
+  errorMessage: string;
+  isSuccess: boolean;
 }
+export interface IFilter{
+  genre: string;
+  publication_date: string;
+}
+export interface ISearch{
+  searchTerm: string;
+}
+export const filterBook = createAsyncThunk('book/filterdata', async (payload:IFilter) => {
+console.log(payload);
+  if (!payload.genre && !payload.publication_date) {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/book/allbooks?`
+    )
+    const data = response.json();
+    return data
+  }
+  else if (payload.genre && !payload.publication_date) {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/book/allbooks?genre=${payload.genre}`
+    )
+    const data = response.json();
+    return data;
+  }
+
+  else if (!payload.genre && payload.publication_date) {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/book/allbooks?publication_date=${payload.publication_date}`
+    )
+    const data = response.json();
+    return data;
+  }
+  else if (payload.genre && payload.publication_date) {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/book/allbooks?genre=${payload.genre}&&publication_date=${payload.publication_date}`
+    )
+    const data = response.json();
+    return data;
+  }
+});
+export const searchBook = createAsyncThunk('book/filterdata', async (payload:ISearch) => {
+
+  if (!payload.searchTerm ) {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/book/allbooks?`
+    )
+    const data = response.json();
+    return data
+  }
+  if (payload.searchTerm ) {
+    const response = await fetch(
+      `http://localhost:5000/api/v1/book/allbooks?searchTerm=${payload?.searchTerm}`
+    )
+    const data = response.json();
+    return data
+  }
+  
+});
+export const getAllBooks = createAsyncThunk('book/getAllBooks', async () => {
+  const response = await fetch(
+    `http://localhost:5000/api/v1/book/allbooks`
+  );
+  const data = response.json();
+  // console.log(data);
+  return data;
+});
+
 const initialState: IWisthlist = {
   wishlist: [],
   total: 0,
+  loading: false,
+  books: [],
+  error: false,
+  errorMessage: '',
+  isSuccess:false
 };
 
 const bookSlice = createSlice({
@@ -25,8 +114,45 @@ const bookSlice = createSlice({
       }
       state.total = state.wishlist.length;
     },
-    
+    setBooks: (state, action:PayloadAction) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+      state.books.push(action?.payload!)
+    }
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(filterBook.pending, (state) => {
+      state.loading = true;
+      state.error = false;
+    }).addCase(filterBook.rejected, (state, action) => {
+      state.loading = false;
+      state.error = true;
+      state.errorMessage = action.error.message!;
+    }).addCase(filterBook.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = false;
+      state.errorMessage = '';
+      state.isSuccess = true;
+      state.books = action.payload;
+    },)
+    builder.addCase(getAllBooks.pending, (state) => {
+      state.loading = true;
+      state.isSuccess = false;
+    }).addCase(getAllBooks.rejected, (state, action)=>{
+      state.loading = false;
+      state.error = true;
+      state.isSuccess = false;
+      state.errorMessage = action.error.message!;
+
+    }).addCase(getAllBooks.fulfilled, (state, action:PayloadAction<[]>) => {
+      state.loading = false;
+      state.error = false;
+      state.errorMessage = '';
+      state.isSuccess = true;
+      state.books =(action.payload)
+
+    })
   },
 });
-export const { addToWisthList } = bookSlice.actions;
+export const { addToWisthList,setBooks } = bookSlice.actions;
 export default bookSlice.reducer;

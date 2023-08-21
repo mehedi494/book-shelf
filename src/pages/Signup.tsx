@@ -4,7 +4,12 @@ import { SignupForm } from '../components/SignUpForm';
 import { Link } from 'react-router-dom';
 import logo from '../assets/images/bookShelf-logo .png';
 
+
 export default function Signup() {
+  
+  
+
+
   return (
     <>
       <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -44,7 +49,7 @@ export default function Signup() {
                 Enter your email below to create your account
               </p>
             </div>
-            <SignupForm />
+            <SignupForm  />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{' '}
               <Link

@@ -14,25 +14,25 @@ const authApi = api.injectEndpoints({
       }),
     }),
     createUser: builder.mutation({
-      query: (token:string ) => ({
-        url: '/user',
-        method: 'GET',
-        // headers:authorization': localStorage?.getItem('accessToken'),
-        headers: { authorization: token },
+      query: (data) => ({
+        url: '/user/create',
+        method: 'POST',
+        body: data,
       }),
     }),
     getMeUser: builder.mutation({
-      query: (token:string ) => ({
+      query: (token: string) => ({
         url: '/user',
         method: 'GET',
         // headers:authorization': localStorage?.getItem('accessToken'),
         headers: { authorization: token },
       }),
     }),
-    /* getSingleBook: builder.query({
-          query:(id)=>`/book/${id}`
-      }) */
   }),
 });
 
-export const { useLoginUserMutation, useGetMeUserMutation } = authApi;
+export const {
+  useCreateUserMutation,
+  useLoginUserMutation,
+  useGetMeUserMutation,
+} = authApi;

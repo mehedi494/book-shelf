@@ -9,47 +9,95 @@ import { Label } from '@/components/ui/label';
 
 import { FcGoogle } from 'react-icons/fc';
 
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { useCreateUserMutation } from '@/redux/features/auth/authApi';
+import { toast } from './ui/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 interface SignupFormInputs {
+  name: string;
   email: string;
   password: string;
-  confirmPassword:string
+  confirmPassword: string;
+}
+
+interface FetchBaseQueryError {
+  data: {
+    message: string;
+    // Other properties...
+  };
+  // Other properties...
 }
 
 export function SignupForm({ className, ...props }: UserAuthFormProps) {
- 
+  const [createUserFunc, { isSuccess, isError, error }] =
+    useCreateUserMutation();
+  const errorMessage = (error as FetchBaseQueryError)?.data?.message;
 
+  // validation form ....
   const validationSchema = Yup.object().shape({
-    email:Yup.string().required('email is required'),
-    password: Yup.string()
-        .required('Password is required'),
-        // .min(6, 'Password must be at least 6 characters'),
+    name: Yup.string().required('name is required'),
+    email: Yup.string().required('email is required'),
+    password: Yup.string().required('Password is required'),
+    // .min(6, 'Password must be at least 6 characters'),
     confirmPassword: Yup.string()
-        .required('Confirm Password is required')
-        .oneOf([Yup.ref('password')], 'Passwords must match')
-        
-});
-const formOptions = { resolver: yupResolver(validationSchema) };
+      .required('Confirm Password is required')
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
+  });
+  const formOptions = { resolver: yupResolver(validationSchema) };
+  // ........vlidation form end.......
 
-// get functions to build form with useForm() hook
-const { register, handleSubmit, reset, formState } = useForm(formOptions);
-const { errors } = formState;
+  const navigte = useNavigate();
 
-function onSubmit(data:SignupFormInputs) {
-    // display form data on success
-    console.log(data);
-}
+  if (isError) {
+    toast({
+      description: 'Faild! to crate account⚠',
+    });
+  }
+  if (isSuccess) {
+    toast({
+      description: 'Sucessfully create account 🎉',
+    });
+    navigte('/login');
+  }
+  const duplicateEmail = errorMessage?.includes(
+    'E11000 duplicate key error collection'
+  );
+
+  const { register, handleSubmit, formState } = useForm(formOptions);
+  const { errors } = formState;
+
+  function onSubmit(data: SignupFormInputs) {
+    const options = {
+      name: data?.name,
+      email: data?.email,
+      password: data?.password,
+    };
+    createUserFunc(options);
+  }
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="name">
+              Name
+            </Label>
+            <Input
+              id="name"
+              placeholder="Full Name"
+              type="text"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect="off"
+              {...register('name')}
+            />
+            {errors.email && <p>{errors.email.message}</p>}
             <Label className="sr-only" htmlFor="email">
               Email
             </Label>
@@ -79,12 +127,19 @@ function onSubmit(data:SignupFormInputs) {
               autoCapitalize="none"
               autoCorrect="off"
               {...register('confirmPassword')}
-              />
-              {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+            />
+            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
           </div>
           <Button>Create Account</Button>
         </div>
       </form>
+
+      {
+        <p className="text-red-500">
+          {' '}
+          {duplicateEmail ? 'Email alredy exist' : errorMessage}
+        </p>
+      }
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
