@@ -56,7 +56,9 @@ const navigate =useNavigate()
     if (isError) {
       toast({
         description: "failed to Deleted ⚠"
+        
       })
+      navigate('/allbooks')
     }
     if (loading) {
       toast({

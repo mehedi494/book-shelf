@@ -32,7 +32,9 @@ const bookApi = api.injectEndpoints({
         url: `/book/?id=${id}`,
         method: 'DELETE',
         headers: { authorization: token },
+        
       }),
+      invalidatesTags:['books'],
     }),
     commentBook: builder.mutation({
       query: ({ token, payload }) => ({
