@@ -3,15 +3,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { IBook } from './../../../types/globalTypes';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-// interface BookObj {
-//   title: string;
-//   author: string;
-//   publication_date: string;
-//   userId: string;
-//   genre: string;
-//   image: string;
-//   reviews: string[];
-// }
 
 interface IWisthlist {
   wishlist: IBook[];
@@ -35,25 +26,25 @@ export const filterBook = createAsyncThunk(
     console.log(payload);
     if (!payload.genre && !payload.publication_date) {
       const response = await fetch(
-        `http://localhost:5000/api/v1/book/allbooks?`
+        `${import.meta.env.VITE_BASE_URL}/book/allbooks?`
       );
       const data = response.json();
       return data;
     } else if (payload.genre && !payload.publication_date) {
       const response = await fetch(
-        `http://localhost:5000/api/v1/book/allbooks?genre=${payload.genre}`
+        `${import.meta.env.VITE_BASE_URL}/book/allbooks?genre=${payload.genre}`
       );
       const data = response.json();
       return data;
     } else if (!payload.genre && payload.publication_date) {
       const response = await fetch(
-        `http://localhost:5000/api/v1/book/allbooks?publication_date=${payload.publication_date}`
+        `${import.meta.env.VITE_BASE_URL}/book/allbooks?publication_date=${payload.publication_date}`
       );
       const data = response.json();
       return data;
     } else if (payload.genre && payload.publication_date) {
       const response = await fetch(
-        `http://localhost:5000/api/v1/book/allbooks?genre=${payload.genre}&&publication_date=${payload.publication_date}`
+        `${import.meta.env.VITE_BASE_URL}/book/allbooks?genre=${payload.genre}&&publication_date=${payload.publication_date}`
       );
       const data = response.json();
       return data;
@@ -65,14 +56,14 @@ export const searchBook = createAsyncThunk(
   async (payload: ISearch) => {
     if (!payload.searchTerm) {
       const response = await fetch(
-        `http://localhost:5000/api/v1/book/allbooks?`
+        `${import.meta.env.VITE_BASE_URL}/book/allbooks?`
       );
       const data = response.json();
       return data;
     }
     if (payload.searchTerm) {
       const response = await fetch(
-        `http://localhost:5000/api/v1/book/allbooks?searchTerm=${payload?.searchTerm}`
+        `${import.meta.env.VITE_BASE_URL}/book/allbooks?searchTerm=${payload?.searchTerm}`
       );
       const data = response.json();
       return data;
@@ -80,7 +71,7 @@ export const searchBook = createAsyncThunk(
   }
 );
 export const getAllBooks = createAsyncThunk('book/getAllBooks', async () => {
-  const response = await fetch(`http://localhost:5000/api/v1/book/allbooks`);
+  const response = await fetch(`${import.meta.env.VITE_BASE_URL}/book/allbooks`);
   const data = response.json();
   // console.log(data);
   return data;
